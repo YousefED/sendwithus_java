@@ -32,6 +32,9 @@ public class SendWithUsTest {
     static Map<String, Object> invalidRecipientParams = new HashMap<String, Object>();
     static Map<String, Object> defaultSenderParams = new HashMap<String, Object>();
     static Map<String, Object> defaultDataParams = new HashMap<String, Object>();
+    static Map<String, Object> ccParams = new HashMap<String, Object>();
+    static Map<String, Object> bccParams = new HashMap<String, Object>();
+    static Map<String, Object> inlineParams = new HashMap<String, Object>();
     
     @BeforeClass
     public static void setUp() {
@@ -49,6 +52,16 @@ public class SendWithUsTest {
 
         defaultDataParams.put("first_name", "Brad");
         defaultDataParams.put("link", "http://sendwithus.com/some_link");
+
+        ccParams.put("name", "Matt");
+        ccParams.put("address", "us@sendwithus.com");
+
+        bccParams.put("name", "Matt");
+        bccParams.put("address", "us@sendwithus.com");
+
+        inlineParams.put("id", "test_id");
+        inlineParams.put("data", "dGhpc2lzYW5pbWFnZQ==");
+
     }
 
     /**
@@ -88,6 +101,60 @@ public class SendWithUsTest {
             defaultRecipientParams,
             defaultSenderParams,
             defaultDataParams
+        );
+        
+        assertNotNull(sendReceipt);
+    }
+
+    /**
+     *   Test send with cc 
+     */
+    @Test
+    public void testSendWithCc() throws SendWithUsException {
+         
+        SendReceipt sendReceipt = sendwithusAPI.send(
+            EMAIL_ID, 
+            defaultRecipientParams,
+            defaultSenderParams,
+            defaultDataParams,
+            ccParams
+        );
+        
+        assertNotNull(sendReceipt);
+    }
+
+    /**
+     *   Test send with bcc 
+     */
+    @Test
+    public void testSendWithBcc() throws SendWithUsException {
+         
+        SendReceipt sendReceipt = sendwithusAPI.send(
+            EMAIL_ID, 
+            defaultRecipientParams,
+            defaultSenderParams,
+            defaultDataParams,
+            null,
+            bccParams
+        );
+        
+        assertNotNull(sendReceipt);
+    }
+
+    /**
+     *   Test send with inline 
+     */
+    @Test
+    public void testSendWithInline() throws SendWithUsException {
+         
+        SendReceipt sendReceipt = sendwithusAPI.send(
+            EMAIL_ID, 
+            defaultRecipientParams,
+            defaultSenderParams,
+            defaultDataParams,
+            null,
+            null,
+            inlineParams
         );
         
         assertNotNull(sendReceipt);

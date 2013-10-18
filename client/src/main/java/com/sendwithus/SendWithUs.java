@@ -269,4 +269,57 @@ public class SendWithUs
         return gson.fromJson(response, SendReceipt.class);
     }
 
+    /**
+     * send
+     * String emailID
+     * Map<String, Object> recipient
+     * Map<String, Object> sender
+     * Map<String, Object> emailData
+     * Array(Map<String, Object>) cc
+     * Array(Map<String, Object>) bcc
+     * String inline
+     */
+    public SendReceipt send(String emailID, Map<String, Object> recipient, 
+            Map<String, Object> sender, Map<String, Object> emailData,
+            Map<String, Object>[] cc, Map<String, Object>[] bcc,
+            Map<String, Object> inline) 
+            throws SendWithUsException
+    {
+        Map<String, Object> sendParams = new HashMap<String, Object>();
+        sendParams.put("email_id", emailID);
+        sendParams.put("recipient", recipient);
+        sendParams.put("email_data", emailData);
+
+        // sender is optional
+        if (sender != null)
+        {
+            sendParams.put("sender", sender);
+        }
+
+        // cc is optional
+        if (cc != null)
+        {
+            sendParams.put("cc", cc);
+        }
+
+        // bcc is optional
+        if (bcc != null)
+        {
+            sendParams.put("bcc", bcc);
+        }
+
+        // inline is optional
+        if (inline != null)
+        {
+            sendParams.put("inline", inline);
+        }
+
+        String url = getURLEndpoint("send");
+
+        String response = makeURLRequest(url, this.apiKey, "POST", sendParams);
+
+        Gson gson = new Gson();
+        return gson.fromJson(response, SendReceipt.class);
+    }
+
 }
